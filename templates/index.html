@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Flask App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>Product Recommendations</title>
 </head>
 <body>
-    <h1>Hello, Flask!</h1>
+    <h1>Product Recommendations</h1>
+
+    <form method="POST">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
+
+        <label for="productLink">Product Link:</label>
+        <input type="text" id="productLink" name="productLink" required>
+
+        <button type="submit">Save Product</button>
+    </form>
+
+    <h2>Saved Products</h2>
+    <ul>
+        {% for product in products %}
+            <li><a href="{{ product.link }}">{{ product.name }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
