@@ -29,5 +29,16 @@ def index():
 
     return render_template('index.html', products=products)
 
+from datetime import datetime
+
+# Custom filter to format the datetime
+def format_datetime(value, format='%m/%d/%Y'):
+    if value is None:
+        return ""
+    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f').strftime(format)
+
+# Register the filter with the app
+app.jinja_env.filters['datetime'] = format_datetime
+
 if __name__ == '__main__':
     app.run(debug=True)
