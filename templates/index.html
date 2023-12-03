@@ -2,6 +2,34 @@
 <html>
 <head>
     <title>Product Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        th, td {
+            font-size: 16px; /* Larger font size */
+        }
+    </style>
 </head>
 <body>
     <h1>Product Recommendations</h1>
@@ -17,7 +45,7 @@
     </form>
 
     <h2>Saved Products</h2>
-    <table border="1">
+    <table>
         <tr>
             <th>Product Name</th>
             <th>Product Link</th>
