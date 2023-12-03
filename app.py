@@ -1,46 +1,33 @@
-from flask import Flask, render_template, request, redirect, url_for, g
-import sqlite3
+import os
+from flask import Flask, render_template, request, redirect, url_for
+import psycopg2
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
-DATABASE = 'product_db.sqlite'
 
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-    return db
-
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS products (name TEXT, link TEXT)")
-        db.commit()
+def get_db_connection():
+    conn = psycopg2.connect(os.environ.get('DATABASE_URL'))
+    return conn
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    db = get_db()
-    cursor = db.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     if request.method == 'POST':
         product_name = request.form.get('productName')
         product_link = request.form.get('productLink')
 
-        cursor.execute("INSERT INTO products (name, link) VALUES (?, ?)", (product_name, product_link))
-        db.commit()
+        cursor.execute("INSERT INTO products (name, link) VALUES (%s, %s)", (product_name, product_link))
+        conn.commit()
 
         return redirect(url_for('index'))
 
     cursor.execute("SELECT * FROM products")
     products = cursor.fetchall()
+    conn.close()
+
     return render_template('index.html', products=products)
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
