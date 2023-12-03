@@ -10,7 +10,12 @@ app = Flask(__name__)
 def format_datetime(value, format='%m/%d/%Y'):
     if value is None:
         return ""
+    # Check if 'value' is already a datetime object
+    if isinstance(value, datetime):
+        return value.strftime(format)
+    # If 'value' is a string, parse it first
     return datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f').strftime(format)
+
 
 app.jinja_env.filters['datetime'] = format_datetime
 
