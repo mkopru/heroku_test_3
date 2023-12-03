@@ -52,11 +52,11 @@
             <th>Created At</th>
         </tr>
         {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
-                <td><a href="{{ product.link }}">{{ product.link }}</a></td>
-                <td>{{ product.created_at }}</td> <!-- Display the timestamp -->
-            </tr>
+        <tr>
+            <td>{{ product.name }}</td>
+            <td><a href="{{ product.link }}">{{ product.link }}</a></td>
+            <td>{{ product.created_at|datetime }}</td> <!-- Use the custom filter -->
+        </tr>
         {% endfor %}
     </table>
 </body>
