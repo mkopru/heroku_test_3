@@ -1,9 +1,17 @@
-import os
 from flask import Flask, render_template, request, redirect, url_for
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from datetime import datetime
 
 app = Flask(__name__)
+
+# Custom Jinja filter
+def format_datetime(value, format='%m/%d/%Y'):
+    if value is None:
+        return ""
+    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f').strftime(format)
+
+app.jinja_env.filters['datetime'] = format_datetime
 
 def get_db_connection():
     conn = psycopg2.connect(os.environ.get('DATABASE_URL'))
@@ -29,16 +37,6 @@ def index():
 
     return render_template('index.html', products=products)
 
-from datetime import datetime
-
-# Custom filter to format the datetime
-def format_datetime(value, format='%m/%d/%Y'):
-    if value is None:
-        return ""
-    return datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f').strftime(format)
-
-# Register the filter with the app
-app.jinja_env.filters['datetime'] = format_datetime
 
 if __name__ == '__main__':
     app.run(debug=True)
