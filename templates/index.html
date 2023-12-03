@@ -50,12 +50,12 @@
             <th>Product Name</th>
             <th>Product Link</th>
         </tr>
-        {% for product in products %}
-            <tr>
-                <td>{{ product[0] }}</td>
-                <td><a href="{{ product[1] }}">{{ product[1] }}</a></td>
-            </tr>
-        {% endfor %}
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td><a href="{{ product.link }}">{{ product.link }}</a></td>
+                </tr>
+            {% endfor %}
     </table>
 </body>
 </html>
